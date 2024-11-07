@@ -1,17 +1,46 @@
 <?php
-// session start here...
+session_start(); // session start here...
 
 // get all 3 strings from the form (and scrub w/ validation function)
+$password = $_POST['pwd'];
+$repeat_password = $_POST['repeat'];
+$user = $_POST['user'];
 
 // make sure that the two password values match!
+if (!($password == $repeat_password)) {
+    echo "Bad username/password <br>";
+} else {
+    // making hash from password
+    $hash = password_hash($password, PASSWORD_DEFAULT);
 
+// connecting to db
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "softball";
 
-// create the password_hash using the PASSWORD_DEFAULT argument
+    $conn = new mysqli($servername, $username, $password, $dbname);
 
-// login to the database
+    if ($conn->connect_error) {
+        echo "Connection failed: " . $conn->connect_error;
+    }
 
-// make sure that the new user is not already in the database
+// checking if user exist already
+    $sql = "SELECT username FROM users WHERE username = '$user'";
+    $result = $conn->query($sql);
 
-// insert username and password hash into db (put the username in the session
-// or make them login)
+    if ($result->num_rows > 0) {
+        echo "Bad username/password <br>";
+    } else {
+        $sql = "INSERT INTO users (username, password) VALUES ('$user', '$hash')";
+        if ($conn->query($sql) === TRUE) {
+            header('Location: index.php');
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+    }
+}
+
+// fallback for mistakes
+echo "<a href='register.php'>Go Back</a>";
 
