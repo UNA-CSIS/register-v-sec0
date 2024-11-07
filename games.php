@@ -1,3 +1,9 @@
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+
 <?php
 session_start();
 
@@ -30,14 +36,27 @@ $result = $conn->query($sql);
         <title></title>
     </head>
     <body>
-        <?php
-        if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                echo "Opponent: " . $row["opponent"] . " || Site: " . $row["site"] . " || Result: " . $row["result"] . "<br>";
-            }
-        } else {
-            echo "0 results";
-        }
-        ?>
+        <table>
+            <thead>
+                <tr>
+                    <th>Opponent</th>
+                    <th>Site</th>
+                    <th>Result</th>
+                </tr
+            </thead>
+            <tbody>
+                <?php
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row["opponent"] . "</td>";
+                        echo "<td>" . $row["site"] . "</td>";
+                        echo "<td>" . $row["result"] . "</td>";
+                        echo "</tr>";
+                    }
+                }
+                ?>
+            </tbody>
+        </table>
     </body>
 </html>

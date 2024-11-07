@@ -1,10 +1,10 @@
 <?php
 session_start(); // session start here...
-
+include 'validate.php';
 // get all 3 strings from the form (and scrub w/ validation function)
-$password = $_POST['pwd'];
-$repeat_password = $_POST['repeat'];
-$user = $_POST['user'];
+$password = test_input($_POST['pwd']);
+$repeat_password = test_input($_POST['repeat']);
+$user = test_input($_POST['user']);
 
 // make sure that the two password values match!
 if (!($password == $repeat_password)) {
